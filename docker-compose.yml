@@ -1,0 +1,31 @@
+version: '3'
+services:
+  maor:
+    image: maor
+    container_name: maor
+    ports:
+      - "5001:5000"
+    networks:
+      - roky-network
+
+  maynaim:
+    image: may3
+    container_name: may3
+    ports:
+      - "5002:5002"
+    environment:
+      - FLASK_APP=may.py
+    networks:
+      - roky-network
+
+  flask1:
+    image: flask
+    container_name: flask
+    ports:
+      - "5000:5000"
+    networks:
+      - roky-network
+
+networks:
+  roky-network:
+    driver: bridge
