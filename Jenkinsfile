@@ -1,20 +1,29 @@
 pipeline {
     agent any
-
+    environment {
+        DOCKER_IMAGE = 'maorn132/maor25:latest' // שנה לשם המשתמש שלך ב-Docker Hub
+    }
     stages {
-        stage('Build') {
+        stage('Clone from GitHub') {
             steps {
-                echo 'Building the project...'
+                git 'https://github.com/maornaim/maor25.git'
             }
         }
-        stage('Test') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Running tests...'
+                sh 'docker build -t $DOCKER_IMAGE .'
             }
         }
-        stage('Deploy') {
+        stage('Push to Docker Hub') {
             steps {
-                echo 'Deploying application...'
+                withDockerRegistry([credentialsId: 'docker-hub-credentials', url: '']) {
+                    sh 'docker push $DOCKER_IMAGE'
+                }
+            }
+        }
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'kubectl apply -f k8s/deployment.yaml'
             }
         }
     }
