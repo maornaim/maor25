@@ -6,7 +6,9 @@ pipeline {
     stages {
         stage('Clone from GitHub') {
             steps {
-                git 'https://github.com/maornaim/maor25.git'
+                script {
+                    git branch: 'main', url: 'https://github.com/maornaim/maor25.git'
+                }
             }
         }
         stage('Build Docker Image') {
