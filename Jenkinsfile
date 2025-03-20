@@ -1,51 +1,32 @@
 pipeline {
     agent any
-
-    environment {
-        DOCKER_IMAGE = "maorn132/maor25"  // שם ה-repository ב-Docker Hub
-        DOCKER_TAG = "latest"  // הגרסה של ה-image
-    }
-
+    
     stages {
-        stage('Checkout') {
+        stage('Checkout SCM') {
             steps {
-                // קוד למשיכת קבצים מה-repository ב-GitHub
-                git 'https://github.com/maornaim/maor25.git'
+                checkout scm  // מבצע את ה-checkout מה-repository
             }
         }
-        stage('Build Docker Image') {
+        
+        // תוכל להוסיף כאן עוד שלבים, לדוגמה:
+        stage('Build') {
             steps {
-                script {
-                    // בניית ה-Docker image מתוך ה-Dockerfile
-                    sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
-                }
+                echo 'Building the project'
+                // הוספת פקודות בניית קוד כאן אם צריך
             }
         }
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    // עליך להתחבר ל-Docker Hub לפני שאתה מבצע push
-                    sh "docker login -u your-username -p your-password"  // חשוב לשים את פרטי ההתחברות שלך
 
-                    // Push של ה-image ל-Docker Hub
-                    sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
-                }
-            }
-        }
-        stage('Deploy Docker Image') {
+        stage('Deploy') {
             steps {
-                script {
-                    // הרצת הקונטיינר מה-image החדש ב-Docker Hub
-                    sh "docker run -d --name my_container -p 8080:8080 ${DOCKER_IMAGE}:${DOCKER_TAG}"
-                }
+                echo 'Deploying the project'
+                // הוספת פקודות פריסת הקוד אם צריך
             }
         }
     }
-
+    
     post {
         always {
-            // כל פעולה שתתבצע בסיום, לדוגמה סיום המבחן או בניית קונטיינר
-            cleanWs()  // מנקה את המרחב של העבודה
+            cleanWs()  // מנקה את סביבת העבודה בסוף
         }
     }
 }
