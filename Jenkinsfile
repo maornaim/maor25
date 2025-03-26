@@ -2,8 +2,8 @@ pipeline {
     agent any
     environment {
         DOCKER_IMAGE = 'maorn132/maor25:latest' // שנה לשם המשתמש שלך ב-Docker Hub
-        DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials' // שם הקרדנציאלס ל-Docker Hub ב-Jenkins
-        GITHUB_CREDENTIALS = 'github' // שם הקרדנציאלס ל-GitHub ב-Jenkins
+        DOCKER_HUB_CREDENTIALS = 'docker-hub' // שם הקרדנציאלס ל-Docker Hub ב-Jenkins
+        GITHUB_CREDENTIALS = 'git-hub' // שם הקרדנציאלס ל-GitHub ב-Jenkins
     }
     stages {
         stage('Clone from GitHub') {
