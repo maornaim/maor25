@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maor25-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: maor25
+  template:
+    metadata:
+      labels:
+        app: maor25
+    spec:
+      containers:
+      - name: maor25-container
+        image: maorn132/maor25:latest
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: maor25-service
+spec:
+  selector:
+    app: maor25
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer
