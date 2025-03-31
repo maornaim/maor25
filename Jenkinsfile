@@ -9,7 +9,6 @@ pipeline {
         stage('Clone from GitHub') {
             steps {
                 script {
-                    // clone the repository using the GitHub credentials
                     git branch: 'main', url: 'https://github.com/maornaim/maor25.git', credentialsId: "${GITHUB_CREDENTIALS}"
                 }
             }
@@ -17,7 +16,6 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // build the Docker image
                     sh "docker build -t ${DOCKER_IMAGE} ."
                 }
             }
@@ -25,18 +23,9 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    // Push Docker image to Docker Hub using the Docker credentials
                     withDockerRegistry([credentialsId: "${DOCKER_HUB_CREDENTIALS}"]) {
                         sh "docker push ${DOCKER_IMAGE}"
                     }
-                }
-            }
-        }
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    // Deploy the application to Kubernetes (ensure you have a valid deployment.yaml)
-                    sh 'kubectl apply -f k8s/deployment.yaml'
                 }
             }
         }
